@@ -8,10 +8,9 @@
 
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
-#import "RNFBMessagingModule.h"
 
 #import <React/RCTAppSetupUtils.h>
-#import <Firebase.h>
+
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -41,7 +40,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
-[FIRApp configure];
 
 
 #if RCT_NEW_ARCH_ENABLED

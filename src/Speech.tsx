@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import AudioRecord from "react-native-audio-record";
 import { MotiView } from "moti";
@@ -17,16 +9,12 @@ import Voice from "@react-native-voice/voice";
 import { useAtom } from "jotai";
 import { atomDeviceId, atomQuestion } from "store";
 import { getUniqueId } from "react-native-device-info";
-import axios from "axios";
-const _color = "white";
-const _size = 120;
-
-const url = "http://54.158.196.250:8000/api/v1";
+import { postConversation, postMessage, uploadAudio } from "api";
+import { WAVE_WIDTH } from "config";
 
 const Speech = () => {
   const [device, setDevice] = useAtom(atomDeviceId);
   const [conversation, setConversation] = useState<number>();
-  const [isLoading, setLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
   const navigation: any = useNavigation();
   const [state, setState] = useState({
@@ -35,22 +23,19 @@ const Speech = () => {
     loaded: false,
     paused: false,
   });
-  const [result, setResult] = useAtom(atomQuestion);
+  const [question, setQuestion] = useAtom(atomQuestion);
 
   useEffect(() => {
     const options = {
-      sampleRate: 16000, // default 44100
-      channels: 1, // 1 or 2, default 1
-      bitsPerSample: 16, // 8 or 16, default 16
-      audioSource: 6, // android only (see below)
-      wavFile: "test.mp3", // default 'audio.wav'
+      sampleRate: 16000,
+      channels: 1,
+      bitsPerSample: 16,
+      audioSource: 6,
+      wavFile: "test.mp3",
     };
 
     AudioRecord.init(options);
-    AudioRecord.on("data", (data) => {});
-
     Voice.onSpeechStart;
-    Voice.onSpeechEnd = onSpeechEndHandler;
     Voice.onSpeechResults = onSpeechResultsHandler;
 
     getUniqueId().then((id) => {
@@ -73,16 +58,9 @@ const Speech = () => {
     setToggle(!toggle);
   };
   const start = () => {
-    fetch(`${url}/customer/conversation/create`, {
-      method: "POST",
-      headers: {
-        "device-id": device,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((result) => {
-        setConversation(result.body.id);
-      });
+    postConversation(device).then((body) => {
+      setConversation(body.id);
+    });
 
     AudioRecord.start();
     setState({ ...state, audioFile: "", recording: true, loaded: false });
@@ -95,58 +73,34 @@ const Speech = () => {
     setState({ ...state, audioFile: audofile, recording: false });
   };
 
-  const uploadFile = async (audofile: any) => {
+  const uploadFile = async (audofile: string) => {
     const formData = new FormData();
     formData.append("file", {
       name: "test.mp3",
       uri: audofile,
       type: "audio/mp3",
     });
-
-    fetch(`${url}/file/upload`, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "device-id": device,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((res) => {
-        const params = JSON.stringify({
-          conversation_id: conversation,
-          message_url: res.body.path,
-        });
-        console.log(params, "parsm---------");
-        fetch(`${url}/customer/conversation/message/send`, {
-          method: "POST",
-          body: params as any,
-          headers: {
-            "device-id": device,
-          },
-        })
-          .then((resp) => resp.json())
-          .then((result) => {
-            console.log(result, "sentRes00000>");
-            navigation.navigate("Result", {
-              data: {
-                conversation_id: conversation,
-              },
-            });
-          });
+    console.log("Question", question);
+    uploadAudio(formData, device).then((res) => {
+      const params = JSON.stringify({
+        conversation_id: conversation,
+        message_text: question,
+        message_url: res.body.path,
       });
-  };
-
-  const onSpeechEndHandler = (e: any) => {
-    setLoading(false);
+      postMessage(params, device);
+    });
+    navigation.navigate("Result", {
+      data: {
+        conversation_id: conversation,
+      },
+    });
   };
 
   const onSpeechResultsHandler = (e: any) => {
     let text = e.value[0];
-    setResult(text);
-    console.log("speech result handler", e);
+    setQuestion(text);
   };
   const startRecording = async () => {
-    setLoading(true);
     try {
       await Voice.start("en-Us");
     } catch (error) {
@@ -198,7 +152,7 @@ const Speech = () => {
                     styles.dot,
                     StyleSheet.absoluteFillObject,
                     toggle && {
-                      borderColor: _color,
+                      borderColor: "white",
                     },
                   ]}
                 />
@@ -275,9 +229,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   dot: {
-    width: _size,
-    height: _size,
-    borderRadius: _size,
+    width: WAVE_WIDTH,
+    height: WAVE_WIDTH,
+    borderRadius: WAVE_WIDTH,
     borderWidth: 1,
   },
   center: {

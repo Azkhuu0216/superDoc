@@ -19,6 +19,7 @@ const Conversation = ({ no, message }: IConversation) => {
         navigation.navigate("Result", {
           data: {
             conversation_id: no,
+            is_history: true,
           },
         })
       }

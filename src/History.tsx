@@ -1,38 +1,63 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import Conversation from "Conversation";
 import { useAtom } from "jotai";
 import { atomDeviceId } from "store";
+import LottieView from "lottie-react-native";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import { useNavigation } from "@react-navigation/native";
+import { fetchConversations } from "api";
+import { Conversation } from "interface";
+import HistoryRow from "./Conversation";
 
-const url = "http://54.158.196.250:8000/api/v1";
-
+interface historyStruct {
+  [x: string]: Conversation[];
+}
 const History = () => {
-  const [device, setDevice] = useAtom(atomDeviceId);
-  const [historyList, setHistoryList] = useState({});
+  const navigation = useNavigation();
+  const [device] = useAtom(atomDeviceId);
+  const [loading, setLoading] = useState(true);
+  const [historyList, setHistoryList] = useState<historyStruct>({});
 
   useEffect(() => {
+    setLoading(true);
     setInterval(() => {
-      messageList();
+      getConversations();
     }, 3000);
   }, []);
 
-  const messageList = () => {
-    fetch(`${url}/customer/conversation/list`, {
-      method: "POST",
-      headers: {
-        "device-id": device,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((result) => {
-        console.log(result.body, "list------->");
-        setHistoryList(result?.body);
-      });
+  const getConversations = () => {
+    fetchConversations(device).then((result) => {
+      setHistoryList(result);
+      setLoading(false);
+    });
   };
+  if (loading) {
+    return (
+      <LottieView
+        style={styles.loader}
+        source={require("../assets/lottie/loader.json")}
+        autoPlay
+      />
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ marginHorizontal: 16 }}>
-        <Text style={styles.headingText}>History</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 16,
+        }}
+      >
+        <AntDesign
+          name="left"
+          size={24}
+          color={"black"}
+          onPress={() => navigation.goBack()}
+        />
+        <View style={{ marginHorizontal: 16 }}>
+          <Text style={styles.headingText}>History</Text>
+        </View>
       </View>
 
       <ScrollView>
@@ -41,7 +66,7 @@ const History = () => {
             <View>
               <Text style={styles.paragraph}>{key}</Text>
               {(historyList[key] as any[]).map((item, index) => (
-                <Conversation
+                <HistoryRow
                   no={item.first_message?.conversation_id}
                   message={item.first_message?.message_text}
                   key={index}
@@ -63,15 +88,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   headingText: {
-    marginTop: 26,
-    marginBottom: 10,
     fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 35,
     color: "#54A3FF",
   },
   paragraph: {
     fontSize: 14,
     alignSelf: "center",
     marginVertical: 20,
+  },
+  loader: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

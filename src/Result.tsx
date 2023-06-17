@@ -1,7 +1,7 @@
 import {
-  Alert,
-  Dimensions,
+  Easing,
   Image,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AudioRecord from "react-native-audio-record";
 import { useNavigation } from "@react-navigation/native";
 import Feather from "react-native-vector-icons/Feather";
@@ -17,19 +17,25 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { useAtom } from "jotai";
 import { atomDeviceId, atomQuestion } from "store";
 import Voice from "@react-native-voice/voice";
+import SoundPlayer from "react-native-sound-player";
 import VoiceComponent from "Voice";
-import Sound from "react-native-sound";
-
-const url = "http://54.158.196.250:8000/api/v1";
-const { width } = Dimensions.get("window");
-Sound.setCategory("Playback");
+import { Conversation, Message } from "interface";
+import { WAVE_WIDTH, defaultConversation } from "config";
+import {
+  postMessage,
+  uploadAudio,
+  fetchConversation,
+  fetchMessages,
+} from "api";
 
 const Result = ({ route }: any) => {
+  const [question, setQuestion] = useAtom(atomQuestion);
   const conversation_id = route?.params?.data.conversation_id;
-
-  const [device, setDevice] = useAtom(atomDeviceId);
+  const is_history = route?.params?.data.is_history;
+  const [device] = useAtom(atomDeviceId);
   const [toggle, setToggle] = useState(false);
-  const [question, setQuestion] = useState("");
+  const [conversation, setConversation] =
+    useState<Conversation>(defaultConversation);
   const navigation = useNavigation();
   const [state, setState] = useState({
     audioFile: "",
@@ -37,28 +43,23 @@ const Result = ({ route }: any) => {
     loaded: false,
     paused: false,
   });
-  const [currentVoice, setCurrentVoice] = useState<string>();
-  const [playing, setPlaying] = useState<boolean>(false);
-  const [sample, setSample] = useState([]);
-  const [conversation, setConversation] = useState<number>();
+  const [currentVoice, setCurrentVoice] = useState<number>();
+  const [sample, setSample] = useState<Message[]>([]);
 
-  const lastMessage = sample.length - 1;
-  const messageStatus = sample[lastMessage]?.message_status;
-
+  const messageStatus = sample?.[sample.length - 1]?.message_status;
   useEffect(() => {
     const options = {
-      sampleRate: 16000, // default 44100
-      channels: 1, // 1 or 2, default 1
-      bitsPerSample: 16, // 8 or 16, default 16
-      audioSource: 6, // android only (see below)
-      wavFile: "test.mp3", // default 'audio.wav'
+      sampleRate: 16000,
+      channels: 1,
+      bitsPerSample: 16,
+      audioSource: 6,
+      wavFile: "test.mp3",
     };
 
     AudioRecord.init(options);
     AudioRecord.on("data", (data) => {});
 
     Voice.onSpeechStart;
-    Voice.onSpeechEnd = onSpeechEndHandler;
     Voice.onSpeechResults = onSpeechResultsHandler;
 
     return () => {
@@ -67,104 +68,21 @@ const Result = ({ route }: any) => {
   }, []);
   useEffect(() => {
     setInterval(() => {
-      messageList();
+      getMessages();
       getConversation();
     }, 3000);
   }, []);
 
   const getConversation = () => {
-    fetch(`${url}/customer/conversation/get/${conversation_id}`, {
-      method: "GET",
-      headers: {
-        "device-id": device,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((result) => {
-        setQuestion(result?.body?.first_message?.message_text);
-      });
-  };
-
-  const messageList = () => {
-    fetch(`${url}/customer/conversation/message/list`, {
-      method: "POST",
-      body: JSON.stringify({
-        conversation_id: parseInt(conversation_id),
-      }) as any,
-      headers: {
-        "device-id": device,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((result) => {
-        // console.log(result, "rrrrrr");
-        setSample(result?.body);
-      });
-  };
-  let audio = useRef<any>(null);
-
-  console.log(messageStatus, "status------>");
-
-  useEffect(() => {
-    if (
-      audio.current?.isPlaying() &&
-      currentVoice === audio.current?._filename
-    ) {
-      stopVoice();
-      return;
-    }
-    if (
-      currentVoice !== audio.current?._filename ||
-      currentVoice === undefined
-    ) {
-      audio.current = new Sound(currentVoice, null, (error) => {
-        // if (error) {
-        //   console.log("failed to load the sound", error);
-        //   return;
-        // }
-        // if loaded successfully
-        // console.log(
-        //   "duration in seconds: " +
-        //     audio.current.getDuration() +
-        //     "number of channels: " +
-        //     audio.current.getNumberOfChannels()
-        // );
-      });
-
-      // audio.current.getCurrentTime((seconds) => console.log("at " + seconds));
-      audio.current.setVolume(1);
-    }
-
-    setTimeout(() => {
-      toggleVoice();
-    }, 1000);
-    return () => {
-      audio.current.release();
-    };
-  }, [currentVoice, playing]);
-
-  const toggleVoice = () => {
-    if (audio.current.isPlaying()) {
-      stopVoice();
-    } else if (currentVoice !== undefined) {
-      playVoice();
-    }
-  };
-  const playVoice = () => {
-    audio.current.play((success: any) => {
-      if (success) {
-        stopVoice();
-        console.log("successfully finished playing");
-      } else {
-        stopVoice();
-        console.log("playback failed due to audio decoding errors");
-      }
+    fetchConversation(conversation_id, device).then((result) => {
+      setConversation(result);
     });
   };
 
-  const stopVoice = () => {
-    audio.current.pause();
-    setCurrentVoice(undefined);
+  const getMessages = () => {
+    fetchMessages(conversation_id, device).then((result) => {
+      setSample(result);
+    });
   };
 
   const toggleRecord = () => {
@@ -191,45 +109,33 @@ const Result = ({ route }: any) => {
     setState({ ...state, audioFile: audofile, recording: false });
   };
 
-  const uploadFile = async (audofile: any) => {
+  const uploadFile = async (audofile: string) => {
     const formData = new FormData();
     formData.append("file", {
       name: "test.mp3",
       uri: audofile,
       type: "audio/mp3",
     });
-
-    fetch(`${url}/file/upload`, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "device-id": device,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((res) => {
-        const params = JSON.stringify({
-          conversation_id: conversation_id,
-          message_url: res.body.path,
-        });
-        fetch(`${url}/customer/conversation/message/send`, {
-          method: "POST",
-          body: params as any,
-          headers: {
-            "device-id": device,
-          },
-        })
-          .then((resp) => resp.json())
-          .then((result) => {});
+    uploadAudio(formData, device).then((res) => {
+      const params = JSON.stringify({
+        conversation_id: conversation_id,
+        message_text: question,
+        message_url: res.body.path,
       });
+      postMessage(params, device);
+    });
   };
 
-  const onSpeechEndHandler = (e: any) => {};
-
   const onSpeechResultsHandler = (e: any) => {
-    let text = e.value[0];
+    let text = e.value[0] as string;
     setQuestion(text);
-    console.log("speech result handler", e);
+    setConversation({
+      ...defaultConversation,
+      first_message: {
+        ...defaultConversation.first_message,
+        message_text: text,
+      },
+    });
   };
   const startRecording = async () => {
     try {
@@ -246,13 +152,10 @@ const Result = ({ route }: any) => {
       console.log("error raised", error);
     }
   };
-  const setPlayingVoice = (voice: string) => {
-    setCurrentVoice(voice);
-    setPlaying(!playing);
-  };
 
-  console.log("god", messageStatus);
-
+  const text = is_history
+    ? conversation.first_message?.message_text || "Loading"
+    : question || "Loading";
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -281,37 +184,34 @@ const Result = ({ route }: any) => {
         >
           <Feather name="alert-circle" size={24} color={"black"} />
           <View style={{ flex: 1 }}>
-            <Text style={styles.question}>{question || "Loading"} </Text>
+            <Text style={styles.question}>{text}</Text>
           </View>
         </View>
       </View>
       <ScrollView>
         <Text style={{ alignSelf: "center", marginTop: 50, marginBottom: 20 }}>
-          7 May 2023, 17:51
+          {new Date(conversation?.created_at).toLocaleDateString()}
         </Text>
-        {sample?.map((voice: any, index) => (
+        {sample?.map((voice, index) => (
           <VoiceComponent
             right={voice.message_type}
             transcript={voice.message_text}
-            isPlaying={currentVoice === voice.message_url}
-            handlePlay={() => {
-              setPlayingVoice(voice.message_url);
+            isCurrentIndex={currentVoice === index}
+            changeIndex={() => {
+              setCurrentVoice(index);
             }}
             loading={false}
-            index={index}
-            lastChild={sample.length - 1}
             key={index}
+            voice={voice.message_url}
           />
         ))}
         {(messageStatus === "loading" || messageStatus === undefined) && (
           <VoiceComponent
             right={"recieved"}
-            isPlaying={false}
+            isCurrentIndex={false}
             loading={true}
             transcript={""}
-            handlePlay={() => {}}
-            index={sample.length}
-            lastChild={sample.length}
+            voice=""
           />
         )}
       </ScrollView>
@@ -342,11 +242,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     padding: 10,
     borderColor: "blue",
-    position: "absolute",
-    bottom: 60,
+    marginTop: 10,
   },
   question: {
     marginLeft: 10,
     fontWeight: "600",
+  },
+  dot: {
+    width: WAVE_WIDTH / 2,
+    height: WAVE_WIDTH / 2,
+    borderRadius: WAVE_WIDTH,
+    borderWidth: 1,
+  },
+  center: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -5,46 +6,112 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Animated,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import LottieView from "lottie-react-native";
+import SoundPlayer from "react-native-sound-player";
+import { formatTime } from "./utils";
 
 const { width } = Dimensions.get("window");
 
 interface IVoice {
   right?: string;
   duration?: string;
-  voice?: string;
-  isPlaying: boolean;
+  voice: string;
+  isCurrentIndex: boolean;
   transcript: string;
-  handlePlay: (value: string) => void;
-  index: number;
-  lastChild: number;
+  changeIndex?: () => void;
   loading: boolean;
 }
 
 const Voice = ({
   right,
   transcript,
-  isPlaying,
-  handlePlay,
-  index,
-  lastChild,
+  isCurrentIndex,
+  changeIndex,
   loading,
-  voice = "https://fibo-resources.s3.ap-southeast-1.amazonaws.com/audio/response-ttsMP3.com_VoiceText_2023-6-16_23_33_33.mp3",
+  voice,
 }: IVoice) => {
-  console.log(loading);
+  const intervalID = useRef<NodeJS.Timeout>();
+  const [duration, setDuration] = useState(0);
   const [collapse, setCollapse] = useState(false);
+  const [play, setPlay] = useState(false);
+  const [waiting, setWaiting] = useState(true);
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const toggleRecord = () => {
+    changeIndex && changeIndex();
+    if (play && isCurrentIndex) {
+      SoundPlayer.pause();
+      setPlay(false);
+    } else {
+      SoundPlayer.playUrl(voice);
+      setPlay(true);
+    }
+  };
+
+  useEffect(() => {
+    if (isCurrentIndex) {
+      intervalID.current = setInterval(updatePosition, 100);
+    }
+    return () => clearInterval(intervalID.current);
+  }, [isCurrentIndex]);
+
+  useEffect(() => {
+    const _onFinishedPlayingSubscription = SoundPlayer.addEventListener(
+      "FinishedPlaying",
+      () => {
+        setPlay(false);
+      }
+    );
+
+    const _onFinishedLoadingSubscription = SoundPlayer.addEventListener(
+      "FinishedLoading",
+      () => {
+        setWaiting(false);
+      }
+    );
+
+    return () => {
+      _onFinishedPlayingSubscription.remove();
+      _onFinishedLoadingSubscription.remove();
+      SoundPlayer.unmount();
+    };
+  }, []);
+
+  useEffect(() => {
+    setWaiting(true);
+    if (voice) {
+      SoundPlayer.loadUrl(voice);
+      SoundPlayer.getInfo().then((value) => {
+        setDuration(Math.floor(value.duration));
+      });
+    }
+  }, []);
+
+  const updatePosition = () => {
+    if (isCurrentIndex) {
+      SoundPlayer.getInfo().then((value) => {
+        setCurrentTime(value.currentTime);
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!isCurrentIndex) setPlay(false);
+  }, [isCurrentIndex]);
+
+  const diff = duration - currentTime;
+  const percent = (currentTime / duration) * 100;
+
   return (
     <View
       style={[
         styles.container,
-
         {
           alignSelf: right === "sent" ? "flex-end" : "flex-start",
           backgroundColor: right === "sent" ? "#375FFF" : "rgba(0, 0, 0, 0.06)",
-          marginBottom: lastChild === index && loading ? 120 : 0,
         },
         collapse && {
           width: width - 100,
@@ -54,7 +121,7 @@ const Voice = ({
         },
       ]}
     >
-      {loading ? (
+      {loading || waiting ? (
         <LottieView
           style={styles.loader}
           source={require("../assets/lottie/loader.json")}
@@ -62,7 +129,20 @@ const Voice = ({
         />
       ) : (
         <>
-          <TouchableOpacity onPress={() => handlePlay(voice)}>
+          <TouchableOpacity onPress={toggleRecord}>
+            {isCurrentIndex && (
+              <Animated.View
+                style={{
+                  bottom: -4,
+                  position: "absolute",
+                  zIndex: 99,
+                  left: `${percent > 100 ? 100 : percent}%`,
+                  width: 5,
+                  height: 30,
+                  backgroundColor: right === "received" ? "#002ad4" : "#000000",
+                }}
+              />
+            )}
             {collapse ? (
               <View style={{ flexDirection: "row" }}>
                 <Image
@@ -101,7 +181,6 @@ const Voice = ({
               justifyContent: "space-between",
             }}
           >
-            {/* <AntDesign name="caretright" size={10} color={"white"} /> */}
             {!collapse && (
               <View
                 style={{
@@ -111,10 +190,10 @@ const Voice = ({
                 }}
               >
                 <FontAwesome
-                  name={isPlaying ? "pause" : "play"}
+                  name={play ? "pause" : "play"}
                   size={10}
                   color={right === "sent" ? "white" : "black"}
-                  onPress={() => handlePlay(voice)}
+                  onPress={toggleRecord}
                 />
 
                 <Text
@@ -123,7 +202,7 @@ const Voice = ({
                     marginHorizontal: 10,
                   }}
                 >
-                  0:20
+                  {formatTime(diff > 0 ? diff : 0)}
                 </Text>
               </View>
             )}
@@ -139,7 +218,7 @@ const Voice = ({
                     marginLeft: 10,
                   },
                 collapse &&
-                  right === "recieved" && {
+                  right === "received" && {
                     borderRightWidth: 1,
                     paddingRight: 20,
                     marginRight: 10,

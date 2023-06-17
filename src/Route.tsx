@@ -16,7 +16,6 @@ const Route = () => {
           name="Speech"
           options={{
             headerShown: false,
-            gestureEnabled: false,
           }}
           component={Speech}
         />
@@ -24,7 +23,6 @@ const Route = () => {
           name="Result"
           options={{
             headerShown: false,
-            gestureEnabled: false,
           }}
           component={Result}
         />
@@ -32,7 +30,6 @@ const Route = () => {
           name="History"
           options={{
             headerShown: false,
-            gestureEnabled: false,
           }}
           component={History}
         />
