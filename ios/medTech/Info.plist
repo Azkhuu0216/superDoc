@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.fiboeducation.srve</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>medTech</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.3</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.457981892208-kmtdm54fvv5tgfsl3ejgu9aes2ndoeog</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>8</string>
+	<key>CodePushDeploymentKey</key>
+	<string>$(CODEPUSH_KEY)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app requires access to your Apple Music library to create personalized playlists based on your listening history.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Enable access so you can take photos of your listing, experience, government
+ID, and more directly from the SRVE app.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need your location to show you
+nearby chefs and experiences</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location to show you
+nearby chefs and experiences</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to show you
+nearby chefs and experiences</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to show you
+nearby chefs and experiences</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>NSMotionUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Let SRVE access you library so you
+can upload photos to you profile,
+experience, or listing.</string>
+	<key>NSSiriUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This app require permission to access details</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Fontisto.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-SemiBold.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
+		<string>PublicSans-ExtraLight.ttf</string>
+		<string>Poppins-Medium.ttf</string>
+		<string>PublicSans-Thin.ttf</string>
+		<string>OpenSans-Medium.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen.storyboard</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>We need to permission to access details</string>
+</dict>
+</plist>
