@@ -93,6 +93,7 @@ const Speech = () => {
     navigation.navigate("Result", {
       data: {
         conversation_id: conversation,
+        clean: true,
       },
     });
   };
@@ -132,7 +133,7 @@ const Speech = () => {
       >
         <View style={{ flex: 1 }}>
           <View style={[styles.center, styles.dot]}>
-            {[...Array(3).keys()].map((index) => {
+            {[...Array(5).keys()].map((index) => {
               return (
                 <MotiView
                   from={{ opacity: 0, scale: 1 }}
@@ -146,7 +147,7 @@ const Speech = () => {
                     easing: Easing.out(Easing.ease),
                     delay: 400 * index,
                     loop: true,
-                    repeatReverse: true,
+                    // repeatReverse: true,
                   }}
                   key={index}
                   style={[

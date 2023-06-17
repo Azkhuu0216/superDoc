@@ -1,7 +1,18 @@
+import Voice from "@react-native-voice/voice";
+import { useNavigation } from "@react-navigation/native";
+import VoiceComponent from "Voice";
 import {
-  Easing,
+  fetchConversation,
+  fetchMessages,
+  postMessage,
+  uploadAudio,
+} from "api";
+import { WAVE_WIDTH, defaultConversation } from "config";
+import { Conversation, Message } from "interface";
+import { useAtom } from "jotai";
+import React, { useEffect, useState } from "react";
+import {
   Image,
-  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -9,34 +20,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import AudioRecord from "react-native-audio-record";
-import { useNavigation } from "@react-navigation/native";
-import Feather from "react-native-vector-icons/Feather";
+import Sound from "react-native-sound";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { useAtom } from "jotai";
+import Feather from "react-native-vector-icons/Feather";
 import { atomDeviceId, atomQuestion } from "store";
-import Voice from "@react-native-voice/voice";
-import SoundPlayer from "react-native-sound-player";
-import VoiceComponent from "Voice";
-import { Conversation, Message } from "interface";
-import { WAVE_WIDTH, defaultConversation } from "config";
-import {
-  postMessage,
-  uploadAudio,
-  fetchConversation,
-  fetchMessages,
-} from "api";
 
+let tempMessage: Message[] = [];
 const Result = ({ route }: any) => {
   const [question, setQuestion] = useAtom(atomQuestion);
   const conversation_id = route?.params?.data.conversation_id;
   const is_history = route?.params?.data.is_history;
+  const clean = route?.params?.data.clean;
   const [device] = useAtom(atomDeviceId);
   const [toggle, setToggle] = useState(false);
   const [conversation, setConversation] =
     useState<Conversation>(defaultConversation);
-  const navigation = useNavigation();
   const [state, setState] = useState({
     audioFile: "",
     recording: false,
@@ -48,6 +47,31 @@ const Result = ({ route }: any) => {
   const [lastMessageStatus, setLastMessageStatus] = useState(
     messages?.[messages.length - 1]?.message_status
   );
+  useEffect(() => {
+    setMessages([]);
+  }, [clean]);
+  useEffect(() => {
+    Sound.setCategory("Playback", true); // true = mixWithOthers
+
+    tempMessage = messages.map((message) => {
+      return {
+        ...message,
+        sound: new Sound(message.message_url, "", (err) => {
+          if (err) {
+            return;
+          }
+        }),
+      };
+    });
+
+    return () => {
+      tempMessage.map((message) => {
+        if (message.sound) {
+          message.sound.release();
+        }
+      });
+    };
+  }, [messages]);
 
   useEffect(() => {
     const options = {
@@ -169,7 +193,7 @@ const Result = ({ route }: any) => {
   console.log(lastMessageStatus);
 
   const text = is_history
-    ? conversation.first_message?.message_text || "Loading"
+    ? conversation?.first_message?.message_text || "Loading"
     : question || "Loading";
   return (
     <SafeAreaView style={styles.container}>
@@ -177,15 +201,8 @@ const Result = ({ route }: any) => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          paddingHorizontal: 16,
         }}
       >
-        <AntDesign
-          name="left"
-          size={24}
-          color={"black"}
-          onPress={() => navigation.goBack()}
-        />
         <View
           style={{
             flexDirection: "row",
@@ -208,39 +225,63 @@ const Result = ({ route }: any) => {
           {new Date(conversation?.created_at).toLocaleDateString()}
         </Text>
 
-        {lastMessageStatus === "loading" || lastMessageStatus === undefined
-          ? // <VoiceComponent
-            //   right={"recieved"}
-            //   isCurrentIndex={false}
-            //   loading={true}
-            //   transcript={""}
-            //   voice=""
-            // />
-            null
-          : messages?.map((voice, index) => (
-              <VoiceComponent
-                right={voice.message_type}
-                transcript={voice.message_text}
-                isCurrentIndex={currentVoice === index}
-                changeIndex={() => {
-                  setCurrentVoice(index);
-                }}
-                loading={false}
-                key={index}
-                voice={voice.message_url}
-              />
-            ))}
+        {tempMessage?.map((voice, index) => (
+          <VoiceComponent
+            sound={voice.sound}
+            pre_diagnosis={conversation.pre_diagnosis}
+            diagnosis_level={conversation.diagnosis_level}
+            diagnosis={conversation.diagnosis}
+            right={voice.message_type}
+            transcript={voice.message_text}
+            isCurrentIndex={currentVoice === index}
+            changeIndex={() => {
+              setCurrentVoice(index);
+            }}
+            loading={false}
+            key={index}
+            voice={voice.message_url}
+          />
+        ))}
+        {(lastMessageStatus === "loading" ||
+          lastMessageStatus === undefined) && (
+          <VoiceComponent
+            right={"recieved"}
+            isCurrentIndex={false}
+            loading={true}
+            transcript={""}
+            voice=""
+            diagnosis_level=""
+          />
+        )}
+        {lastMessageStatus !== "loading" &&
+          lastMessageStatus !== undefined &&
+          conversation?.diagnosis?.length > 0 &&
+          conversation?.diagnosis && (
+            <VoiceComponent
+              right={"recieved"}
+              isCurrentIndex={false}
+              loading={true}
+              transcript={""}
+              voice=""
+              isDone={true}
+              pre_diagnosis={conversation.pre_diagnosis}
+              diagnosis_level={conversation.diagnosis_level}
+              diagnosis={conversation.diagnosis}
+            />
+          )}
       </ScrollView>
-      <TouchableOpacity
-        onPress={toggleRecord}
-        disabled={lastMessageStatus === "loading"}
-        style={[styles.start, toggle && { borderWidth: 0 }]}
-      >
-        <Image
-          source={require("../assets/images/Mic_fill.png")}
-          style={{ width: 50, height: 50 }}
-        />
-      </TouchableOpacity>
+      {conversation.diagnosis?.length === 0 && (
+        <TouchableOpacity
+          onPress={toggleRecord}
+          disabled={lastMessageStatus === "loading"}
+          style={[styles.start, toggle && { borderWidth: 0 }]}
+        >
+          <Image
+            source={require("../assets/images/Mic_fill.png")}
+            style={{ width: 50, height: 50 }}
+          />
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };

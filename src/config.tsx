@@ -1,8 +1,8 @@
 import { Conversation } from "interface";
 
-export const URL = "https://5f98-122-201-20-194.jp.ngrok.io/api/v1";
-// export const URL = "http://54.158.196.250:8000/api/v1";
-export const WAVE_WIDTH = 120;
+// export const URL = "https://5f98-122-201-20-194.jp.ngrok.io/api/v1";
+export const URL = "http://54.158.196.250:8000/api/v1";
+export const WAVE_WIDTH = 80;
 export const defaultConversation: Conversation = {
   id: 0,
   updated_at: "2023-06-17T15:08:05.409025+08:00",

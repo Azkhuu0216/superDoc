@@ -1,12 +1,25 @@
+import Sound from "react-native-sound";
+
 export interface Conversation {
-  id: number;
-  updated_at: string;
+  confidence_percent: number;
   created_at: string;
-  uuid: string;
-  name: string;
   customer_id: number;
-  first_message_id: number;
+  diagnosis: string;
+  diagnosis_level: string;
   first_message: Message;
+  first_message_id: number;
+  gpt_history: GptHistory[];
+  id: number;
+  is_finished: boolean;
+  name: string;
+  pre_diagnosis: string;
+  updated_at: string;
+  uuid: string;
+}
+
+export interface GptHistory {
+  content: string;
+  role: string;
 }
 
 export interface Message {
@@ -19,4 +32,5 @@ export interface Message {
   message_text: string;
   message_type: string;
   message_status: string;
+  sound: Sound;
 }

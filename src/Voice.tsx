@@ -1,30 +1,33 @@
+import LottieView from "lottie-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Animated,
   Dimensions,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Animated,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import LottieView from "lottie-react-native";
-// import SoundPlayer from "react-native-sound-player";
-import { formatTime } from "./utils";
 import Sound from "react-native-sound";
-Sound.setCategory("Playback");
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { formatTime } from "./utils";
 
 const { width } = Dimensions.get("window");
 
 interface IVoice {
   right?: string;
+  diagnosis_level: string;
+  pre_diagnosis?: string;
+  diagnosis?: string;
   duration?: string;
   voice: string;
   isCurrentIndex: boolean;
   transcript: string;
   changeIndex?: () => void;
   loading: boolean;
+  sound?: Sound;
+  isDone?: boolean;
 }
 
 const Voice = ({
@@ -33,56 +36,49 @@ const Voice = ({
   isCurrentIndex,
   changeIndex,
   loading,
-  voice,
+  isDone,
+  sound,
+  diagnosis_level,
+  diagnosis,
+  pre_diagnosis,
 }: IVoice) => {
-  const audio = useRef<Sound>();
   const intervalID = useRef<NodeJS.Timeout>();
-  // const [duration, setDuration] = useState(0);
   const [collapse, setCollapse] = useState(false);
   const [play, setPlay] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-
-  useEffect(() => {
-    if (voice) {
-      audio.current = new Sound(voice, null, (error) => {
-        if (error) {
-          console.log("failed to load the sound", error);
-          return;
-        }
-      });
-    }
-  }, [voice]);
+  const doneFormat = {
+    priority: {
+      color: "#D9AD13",
+      text: "Hospital Care",
+      image: require("../assets/images/priority.png"),
+    },
+    non_urgent: {
+      color: "#09C99B",
+      text: "Outpatient Visit",
+      image: require("../assets/images/non_urgent.png"),
+    },
+    emergency: {
+      color: "#B62323",
+      text: "Transfer to Critical Care",
+      image: require("../assets/images/emergency.png"),
+    },
+  } as { [x: string]: any };
 
   const handlePlay = () => {
     setPlay(true);
-    console.log("PLAYINGGGG", audio.current?.play);
-
-    try {
-      audio.current?.play((success) => {
-        if (success) {
-          console.log("successfully finished playing");
-        } else {
-          console.log("playback failed due to audio decoding errors");
-        }
-
-        console.log("duussan esvel togluulj chadq bga");
-        // handleStop();
-      });
-    } catch (err) {
-      console.log("golog", err);
-    }
+    sound?.play(() => {
+      sound?.release();
+    });
   };
 
   const handleStop = () => {
-    console.log("whhy stop");
-    audio.current?.stop(() => {
+    sound?.stop(() => {
       setPlay(false);
     });
   };
 
   const toggleRecord = () => {
     changeIndex && changeIndex();
-    console.log("gg", play, isCurrentIndex);
     if (play && isCurrentIndex) {
       handleStop();
     } else {
@@ -96,20 +92,91 @@ const Voice = ({
     }
     return () => clearInterval(intervalID.current);
   }, [isCurrentIndex]);
+
   const updatePosition = () => {
-    if (isCurrentIndex && audio.current) {
-      audio.current.getCurrentTime((seconds) => setCurrentTime(seconds));
+    if (isCurrentIndex && sound) {
+      sound.getCurrentTime((seconds) => setCurrentTime(seconds));
     }
   };
 
-  // useEffect(() => {
-  //   console.log("chamas bolod bnu idda min", voice);
-  //   if (!isCurrentIndex) handleStop();
-  // }, [isCurrentIndex]);
+  useEffect(() => {
+    if (!isCurrentIndex) handleStop();
+  }, [isCurrentIndex]);
 
-  const duration = audio.current?.getDuration() || 0;
+  const duration = sound?.getDuration() || 0;
   const diff = duration - currentTime;
   const percent = (currentTime / duration) * 100;
+
+  if (isDone) {
+    return (
+      <View
+        style={[
+          styles.done,
+          { backgroundColor: doneFormat?.[diagnosis_level]?.color },
+        ]}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 10,
+          }}
+        >
+          <View
+            style={{
+              width: 60,
+              height: 60,
+              backgroundColor: "rgba(255, 255, 255, 0.2);",
+              borderRadius: 100,
+              justifyContent: "center",
+              alignItems: "center",
+              opacity: 1,
+            }}
+          >
+            <Image
+              source={doneFormat?.[diagnosis_level]?.image}
+              style={{
+                width: 40,
+                height: 40,
+              }}
+            />
+          </View>
+          <Text style={{ fontSize: 16, color: "white", fontWeight: "600" }}>
+            {doneFormat?.[diagnosis_level]?.text}
+          </Text>
+        </View>
+        <View style={styles.doneButton}>
+          <Text
+            style={{
+              color: doneFormat?.[diagnosis_level]?.color,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              textAlign: "center",
+              fontWeight: "500",
+              textTransform: "capitalize",
+              fontSize: 18,
+            }}
+          >
+            {diagnosis_level?.replace("_", " ")}
+          </Text>
+        </View>
+        <View
+          style={{
+            borderBottomColor: "white",
+            opacity: 0.5,
+            marginVertical: 15,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          }}
+        />
+        <View>
+          <Text style={{ flex: 1, color: "white", fontSize: 16 }}>
+            {diagnosis}
+          </Text>
+        </View>
+      </View>
+    );
+  }
   return (
     <View
       style={[
@@ -144,7 +211,7 @@ const Voice = ({
                   left: `${percent > 100 ? 100 : percent}%`,
                   width: 5,
                   height: 30,
-                  backgroundColor: right === "received" ? "#002ad4" : "#000000",
+                  backgroundColor: right === "received" ? "#002ad4" : "#333333",
                 }}
               />
             )}
@@ -182,7 +249,7 @@ const Voice = ({
             style={{
               flexDirection: "row",
               alignItems: "center",
-              marginTop: 5,
+              marginTop: 10,
               justifyContent: "space-between",
             }}
           >
@@ -214,7 +281,7 @@ const Voice = ({
             <TouchableOpacity
               onPress={() => setCollapse(!collapse)}
               style={[
-                { flex: 1, paddingVertical: 10 },
+                { flex: 1 },
                 collapse &&
                   right === "sent" && {
                     borderLeftWidth: 1,
@@ -227,12 +294,17 @@ const Voice = ({
                     borderRightWidth: 1,
                     paddingRight: 20,
                     marginRight: 10,
-                    borderRightColor: "#000000",
+                    borderRightColor: "#333333",
                   },
               ]}
             >
               <Text
-                style={{ color: right === "sent" ? "white" : "black", flex: 1 }}
+                style={{
+                  color: right === "sent" ? "white" : "black",
+                  flex: 1,
+                  fontSize: 12,
+                  alignSelf: "flex-end",
+                }}
               >
                 {collapse ? transcript : "View transcript"}
               </Text>
@@ -249,12 +321,22 @@ export default Voice;
 const styles = StyleSheet.create({
   container: {
     width: width / 2.2,
-    padding: 10,
+    padding: 12,
     margin: 16,
-    borderRadius: 4,
+    borderRadius: 18,
   },
   loader: {
-    height: 50,
+    height: 70,
     alignSelf: "center",
+  },
+  done: {
+    borderRadius: 10,
+    padding: 20,
+    margin: 16,
+  },
+  doneButton: {
+    color: "#D9AD13",
+    backgroundColor: "white",
+    borderRadius: 90,
   },
 });
