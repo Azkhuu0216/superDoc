@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/OpenSans-Medium.ttf",
+      "sha1": "f886dd439250f2a8a7326f3f6b433adf34c96fe8"
+    },
+    {
+      "path": "assets/fonts/OpenSans-Regular.ttf",
+      "sha1": "9a19a459ca7bca15d2de8269b80411f2b4a71ccf"
+    },
+    {
+      "path": "assets/fonts/OpenSans-SemiBold.ttf",
+      "sha1": "30fcdd8f737e6a86abda2d643d2f23c5286c4663"
+    },
+    {
+      "path": "assets/fonts/Poppins-Bold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    },
+    {
+      "path": "assets/fonts/Poppins-Medium.ttf",
+      "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
+    },
+    {
+      "path": "assets/fonts/Poppins-SemiBold.ttf",
+      "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
+    },
+    {
+      "path": "assets/fonts/PublicSans-ExtraLight.ttf",
+      "sha1": "13f3b4e2b5618a6212f06a04313522ebcea6a709"
+    },
+    {
+      "path": "assets/fonts/PublicSans-Thin.ttf",
+      "sha1": "d5e725d041f32d134b1ff72196dcb3c80ed141db"
+    }
+  ]
+}
