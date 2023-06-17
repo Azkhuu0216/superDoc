@@ -24,7 +24,10 @@ export const fetchConversations = async (device: string) => {
     },
   })
     .then((resp) => resp.json())
-    .then((result) => result?.body);
+    .then((result) => {
+      console.log("Conversation list response");
+      return result?.body;
+    });
 };
 
 export const fetchConversation = async (
@@ -38,7 +41,10 @@ export const fetchConversation = async (
     },
   })
     .then((resp) => resp.json())
-    .then((result) => result?.body);
+    .then((result) => {
+      console.log("Conversation get response", conversation_id, result.body);
+      return result?.body;
+    });
 };
 
 export const postConversation = async (device: string) => {
@@ -49,17 +55,26 @@ export const postConversation = async (device: string) => {
     },
   })
     .then((resp) => resp.json())
-    .then((result) => result?.body);
+    .then((result) => {
+      console.log("Create conversation response", result?.body);
+      return result?.body;
+    });
 };
 
 export const postMessage = async (params: string, device: string) => {
+  console.log("Create message", params);
   return fetch(`${URL}/customer/conversation/message/send`, {
     method: "POST",
     body: params,
     headers: {
       "device-id": device,
     },
-  }).then((resp) => resp.json());
+  })
+    .then((resp) => resp.json())
+    .then((result) => {
+      console.log("Create message response", result?.body);
+      return result?.body;
+    });
 };
 
 export const uploadAudio = async (formData: FormData, device: string) => {

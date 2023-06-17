@@ -10,8 +10,10 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import LottieView from "lottie-react-native";
-import SoundPlayer from "react-native-sound-player";
+// import SoundPlayer from "react-native-sound-player";
 import { formatTime } from "./utils";
+import Sound from "react-native-sound";
+Sound.setCategory("Playback");
 
 const { width } = Dimensions.get("window");
 
@@ -33,21 +35,58 @@ const Voice = ({
   loading,
   voice,
 }: IVoice) => {
+  const audio = useRef<Sound>();
   const intervalID = useRef<NodeJS.Timeout>();
-  const [duration, setDuration] = useState(0);
+  // const [duration, setDuration] = useState(0);
   const [collapse, setCollapse] = useState(false);
   const [play, setPlay] = useState(false);
-  const [waiting, setWaiting] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
+
+  useEffect(() => {
+    if (voice) {
+      audio.current = new Sound(voice, null, (error) => {
+        if (error) {
+          console.log("failed to load the sound", error);
+          return;
+        }
+      });
+    }
+  }, [voice]);
+
+  const handlePlay = () => {
+    setPlay(true);
+    console.log("PLAYINGGGG", audio.current?.play);
+
+    try {
+      audio.current?.play((success) => {
+        if (success) {
+          console.log("successfully finished playing");
+        } else {
+          console.log("playback failed due to audio decoding errors");
+        }
+
+        console.log("duussan esvel togluulj chadq bga");
+        // handleStop();
+      });
+    } catch (err) {
+      console.log("golog", err);
+    }
+  };
+
+  const handleStop = () => {
+    console.log("whhy stop");
+    audio.current?.stop(() => {
+      setPlay(false);
+    });
+  };
 
   const toggleRecord = () => {
     changeIndex && changeIndex();
+    console.log("gg", play, isCurrentIndex);
     if (play && isCurrentIndex) {
-      SoundPlayer.pause();
-      setPlay(false);
+      handleStop();
     } else {
-      SoundPlayer.playUrl(voice);
-      setPlay(true);
+      handlePlay();
     }
   };
 
@@ -57,54 +96,20 @@ const Voice = ({
     }
     return () => clearInterval(intervalID.current);
   }, [isCurrentIndex]);
-
-  useEffect(() => {
-    const _onFinishedPlayingSubscription = SoundPlayer.addEventListener(
-      "FinishedPlaying",
-      () => {
-        setPlay(false);
-      }
-    );
-
-    const _onFinishedLoadingSubscription = SoundPlayer.addEventListener(
-      "FinishedLoading",
-      () => {
-        setWaiting(false);
-      }
-    );
-
-    return () => {
-      _onFinishedPlayingSubscription.remove();
-      _onFinishedLoadingSubscription.remove();
-      SoundPlayer.unmount();
-    };
-  }, []);
-
-  useEffect(() => {
-    setWaiting(true);
-    if (voice) {
-      SoundPlayer.loadUrl(voice);
-      SoundPlayer.getInfo().then((value) => {
-        setDuration(Math.floor(value.duration));
-      });
-    }
-  }, []);
-
   const updatePosition = () => {
-    if (isCurrentIndex) {
-      SoundPlayer.getInfo().then((value) => {
-        setCurrentTime(value.currentTime);
-      });
+    if (isCurrentIndex && audio.current) {
+      audio.current.getCurrentTime((seconds) => setCurrentTime(seconds));
     }
   };
 
-  useEffect(() => {
-    if (!isCurrentIndex) setPlay(false);
-  }, [isCurrentIndex]);
+  // useEffect(() => {
+  //   console.log("chamas bolod bnu idda min", voice);
+  //   if (!isCurrentIndex) handleStop();
+  // }, [isCurrentIndex]);
 
+  const duration = audio.current?.getDuration() || 0;
   const diff = duration - currentTime;
   const percent = (currentTime / duration) * 100;
-
   return (
     <View
       style={[
@@ -121,7 +126,7 @@ const Voice = ({
         },
       ]}
     >
-      {loading || waiting ? (
+      {loading ? (
         <LottieView
           style={styles.loader}
           source={require("../assets/lottie/loader.json")}

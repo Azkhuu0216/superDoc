@@ -20,9 +20,9 @@ const History = () => {
 
   useEffect(() => {
     setLoading(true);
-    setInterval(() => {
-      getConversations();
-    }, 3000);
+    // setInterval(() => {
+    getConversations();
+    // }, 3000);
   }, []);
 
   const getConversations = () => {

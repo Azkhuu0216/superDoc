@@ -59,6 +59,7 @@ const Speech = () => {
   };
   const start = () => {
     postConversation(device).then((body) => {
+      console.log("create conversation response", body);
       setConversation(body.id);
     });
 

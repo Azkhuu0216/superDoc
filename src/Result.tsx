@@ -44,9 +44,11 @@ const Result = ({ route }: any) => {
     paused: false,
   });
   const [currentVoice, setCurrentVoice] = useState<number>();
-  const [sample, setSample] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [lastMessageStatus, setLastMessageStatus] = useState(
+    messages?.[messages.length - 1]?.message_status
+  );
 
-  const messageStatus = sample?.[sample.length - 1]?.message_status;
   useEffect(() => {
     const options = {
       sampleRate: 16000,
@@ -67,11 +69,17 @@ const Result = ({ route }: any) => {
     };
   }, []);
   useEffect(() => {
-    setInterval(() => {
-      getMessages();
-      getConversation();
-    }, 3000);
-  }, []);
+    let interval: any;
+    if (lastMessageStatus === "loading" || !lastMessageStatus) {
+      interval = setInterval(() => {
+        getMessages();
+        getConversation();
+      }, 3000);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [lastMessageStatus]);
 
   const getConversation = () => {
     fetchConversation(conversation_id, device).then((result) => {
@@ -81,7 +89,9 @@ const Result = ({ route }: any) => {
 
   const getMessages = () => {
     fetchMessages(conversation_id, device).then((result) => {
-      setSample(result);
+      setMessages(result);
+
+      setLastMessageStatus(result?.[result.length - 1]?.message_status);
     });
   };
 
@@ -122,7 +132,10 @@ const Result = ({ route }: any) => {
         message_text: question,
         message_url: res.body.path,
       });
-      postMessage(params, device);
+      postMessage(params, device).then(() => {
+        getMessages();
+        getConversation();
+      });
     });
   };
 
@@ -152,6 +165,8 @@ const Result = ({ route }: any) => {
       console.log("error raised", error);
     }
   };
+
+  console.log(lastMessageStatus);
 
   const text = is_history
     ? conversation.first_message?.message_text || "Loading"
@@ -192,32 +207,33 @@ const Result = ({ route }: any) => {
         <Text style={{ alignSelf: "center", marginTop: 50, marginBottom: 20 }}>
           {new Date(conversation?.created_at).toLocaleDateString()}
         </Text>
-        {sample?.map((voice, index) => (
-          <VoiceComponent
-            right={voice.message_type}
-            transcript={voice.message_text}
-            isCurrentIndex={currentVoice === index}
-            changeIndex={() => {
-              setCurrentVoice(index);
-            }}
-            loading={false}
-            key={index}
-            voice={voice.message_url}
-          />
-        ))}
-        {(messageStatus === "loading" || messageStatus === undefined) && (
-          <VoiceComponent
-            right={"recieved"}
-            isCurrentIndex={false}
-            loading={true}
-            transcript={""}
-            voice=""
-          />
-        )}
+
+        {lastMessageStatus === "loading" || lastMessageStatus === undefined
+          ? // <VoiceComponent
+            //   right={"recieved"}
+            //   isCurrentIndex={false}
+            //   loading={true}
+            //   transcript={""}
+            //   voice=""
+            // />
+            null
+          : messages?.map((voice, index) => (
+              <VoiceComponent
+                right={voice.message_type}
+                transcript={voice.message_text}
+                isCurrentIndex={currentVoice === index}
+                changeIndex={() => {
+                  setCurrentVoice(index);
+                }}
+                loading={false}
+                key={index}
+                voice={voice.message_url}
+              />
+            ))}
       </ScrollView>
       <TouchableOpacity
         onPress={toggleRecord}
-        disabled={messageStatus === "loading"}
+        disabled={lastMessageStatus === "loading"}
         style={[styles.start, toggle && { borderWidth: 0 }]}
       >
         <Image
