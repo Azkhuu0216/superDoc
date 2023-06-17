@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>medTech</string>
+	<string>SuperDoc</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -62,7 +62,7 @@
 	<string>This app require permission to access details</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Enable access so you can take photos of your listing, experience, government
-ID, and more directly from the SRVE app.</string>
+ID, and more directly from the medTech app.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>We need your location to show you
 nearby chefs and experiences</string>
@@ -80,7 +80,7 @@ nearby chefs and experiences</string>
 	<key>NSMotionUsageDescription</key>
 	<string>This app require permission to access details</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Let SRVE access you library so you
+	<string>Let medTech access you library so you
 can upload photos to you profile,
 experience, or listing.</string>
 	<key>NSSiriUsageDescription</key>

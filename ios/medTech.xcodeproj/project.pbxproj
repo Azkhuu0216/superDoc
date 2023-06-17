@@ -11,15 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1A4FBA5F29E2D2AA00990CFB /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A4FBA5B29E2D1C600990CFB /* OpenSans-Regular.ttf */; };
-		1A4FBA6029E2D2AA00990CFB /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A4FBA5A29E2D1C400990CFB /* OpenSans-SemiBold.ttf */; };
-		1A4FBA6129E2D2AA00990CFB /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A4FBA5C29E2D1C800990CFB /* Poppins-Bold.ttf */; };
-		1A4FBA6229E2D2AA00990CFB /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A4FBA5929E2D1C100990CFB /* Poppins-Medium.ttf */; };
-		1A4FBA6329E2D2AA00990CFB /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A4FBA5D29E2D1CA00990CFB /* Poppins-SemiBold.ttf */; };
-		1A4FBA6429E2D2AA00990CFB /* PublicSans-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A4FBA5829E2D1BF00990CFB /* PublicSans-ExtraLight.ttf */; };
-		1A4FBA6529E2D2AA00990CFB /* PublicSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A4FBA5E29E2D1CC00990CFB /* PublicSans-Thin.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		99B189E87B58440E970BD9A9 /* OpenSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85D49CD35FC64E8782A9EF98 /* OpenSans-Medium.ttf */; };
 		A159DCBF20F4A3FC075086E3 /* libPods-medTech.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8EC32C058C1E3B23B99996 /* libPods-medTech.a */; };
 		C17C6A26CBBEFA6D56F92660 /* libPods-medTech-medTechTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4174A5381D634CFA82BE5D5F /* libPods-medTech-medTechTests.a */; };
 		CED84B9F2A308336007489FB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CED84B9E2A308335007489FB /* GoogleService-Info.plist */; };
@@ -31,21 +23,21 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = "medTech";
+			remoteInfo = medTech;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* medTechTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "medTechTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* medTechTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = medTechTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* medTechTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "medTechTests.m"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* medTechTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = medTechTests.m; sourceTree = "<group>"; };
 		0C8AB6B3AF89D59A3EE8885A /* Pods-medTech-medTechTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medTech-medTechTests.debug.xcconfig"; path = "Target Support Files/Pods-medTech-medTechTests/Pods-medTech-medTechTests.debug.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* medTech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "medTech.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "medTech/AppDelegate.h"; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = "medTech/AppDelegate.mm"; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "medTech/Images.xcassets"; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "medTech/Info.plist"; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "medTech/main.m"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* medTech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = medTech.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = medTech/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = medTech/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = medTech/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = medTech/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = medTech/main.m; sourceTree = "<group>"; };
 		1A4FBA4329E2D05800990CFB /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
 		1A4FBA4429E2D05A00990CFB /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AntDesign.ttf; sourceTree = "<group>"; };
 		1A4FBA4529E2D05D00990CFB /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
@@ -59,24 +51,13 @@
 		1A4FBA4E29E2D07100990CFB /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		1A4FBA5029E2D07500990CFB /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		1A4FBA5129E2D07700990CFB /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Entypo.ttf; sourceTree = "<group>"; };
-		1A4FBA5229E2D07800990CFB /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		1A4FBA5329E2D07C00990CFB /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
-		1A4FBA5429E2D07E00990CFB /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		1A4FBA5529E2D08100990CFB /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
-		1A4FBA5629E2D08500990CFB /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		1A4FBA5729E2D08900990CFB /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
-		1A4FBA5829E2D1BF00990CFB /* PublicSans-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-ExtraLight.ttf"; sourceTree = "<group>"; };
-		1A4FBA5929E2D1C100990CFB /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		1A4FBA5A29E2D1C400990CFB /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		1A4FBA5B29E2D1C600990CFB /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
-		1A4FBA5C29E2D1C800990CFB /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
-		1A4FBA5D29E2D1CA00990CFB /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
-		1A4FBA5E29E2D1CC00990CFB /* PublicSans-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-Thin.ttf"; sourceTree = "<group>"; };
 		1A4FBA6629E3164A00990CFB /* medTech.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = medTech.entitlements; path = medTech/medTech.entitlements; sourceTree = "<group>"; };
 		2E8EC32C058C1E3B23B99996 /* libPods-medTech.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medTech.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4174A5381D634CFA82BE5D5F /* libPods-medTech-medTechTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-medTech-medTechTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "medTech/LaunchScreen.storyboard"; sourceTree = "<group>"; };
-		85D49CD35FC64E8782A9EF98 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Medium.ttf"; path = "../assets/fonts/OpenSans-Medium.ttf"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = medTech/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A478E6B55F0AB024441C1FF9 /* Pods-medTech.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medTech.release.xcconfig"; path = "Target Support Files/Pods-medTech/Pods-medTech.release.xcconfig"; sourceTree = "<group>"; };
 		A746C9267818A3E844633656 /* Pods-medTech-medTechTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medTech-medTechTests.release.xcconfig"; path = "Target Support Files/Pods-medTech-medTechTests/Pods-medTech-medTechTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA4859C564A4CD90A7B543A9 /* Pods-medTech.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-medTech.debug.xcconfig"; path = "Target Support Files/Pods-medTech/Pods-medTech.debug.xcconfig"; sourceTree = "<group>"; };
@@ -110,7 +91,7 @@
 				00E356F21AD99517003FC87E /* medTechTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = "medTechTests";
+			path = medTechTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -133,7 +114,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = "medTech";
+			name = medTech;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -149,13 +130,6 @@
 		610D1056698A4CD4A5F9FF32 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1A4FBA5B29E2D1C600990CFB /* OpenSans-Regular.ttf */,
-				1A4FBA5A29E2D1C400990CFB /* OpenSans-SemiBold.ttf */,
-				1A4FBA5C29E2D1C800990CFB /* Poppins-Bold.ttf */,
-				1A4FBA5929E2D1C100990CFB /* Poppins-Medium.ttf */,
-				1A4FBA5D29E2D1CA00990CFB /* Poppins-SemiBold.ttf */,
-				1A4FBA5829E2D1BF00990CFB /* PublicSans-ExtraLight.ttf */,
-				1A4FBA5E29E2D1CC00990CFB /* PublicSans-Thin.ttf */,
 				1A4FBA4429E2D05A00990CFB /* AntDesign.ttf */,
 				1A4FBA5129E2D07700990CFB /* Entypo.ttf */,
 				1A4FBA4329E2D05800990CFB /* EvilIcons.ttf */,
@@ -169,13 +143,9 @@
 				1A4FBA4629E2D05F00990CFB /* Ionicons.ttf */,
 				1A4FBA4D29E2D07000990CFB /* MaterialCommunityIcons.ttf */,
 				1A4FBA4B29E2D06C00990CFB /* MaterialIcons.ttf */,
-				1A4FBA5229E2D07800990CFB /* Montserrat-Medium.ttf */,
-				1A4FBA5629E2D08500990CFB /* Montserrat-Regular.ttf */,
 				1A4FBA5529E2D08100990CFB /* Octicons.ttf */,
-				1A4FBA5429E2D07E00990CFB /* Roboto-Regular.ttf */,
 				1A4FBA4E29E2D07100990CFB /* SimpleLineIcons.ttf */,
 				1A4FBA5729E2D08900990CFB /* Zocial.ttf */,
-				85D49CD35FC64E8782A9EF98 /* OpenSans-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -242,8 +212,8 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = "medTechTests";
-			productname = "medTechTests";
+			name = medTechTests;
+			productName = medTechTests;
 			productReference = 00E356EE1AD99517003FC87E /* medTechTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -265,8 +235,8 @@
 			);
 			dependencies = (
 			);
-			name = "medTech";
-			productName = "medTech";
+			name = medTech;
+			productName = medTech;
 			productReference = 13B07F961A680F5B00A75B9A /* medTech.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -318,17 +288,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A4FBA5F29E2D2AA00990CFB /* OpenSans-Regular.ttf in Resources */,
-				1A4FBA6029E2D2AA00990CFB /* OpenSans-SemiBold.ttf in Resources */,
-				1A4FBA6129E2D2AA00990CFB /* Poppins-Bold.ttf in Resources */,
-				1A4FBA6229E2D2AA00990CFB /* Poppins-Medium.ttf in Resources */,
-				1A4FBA6329E2D2AA00990CFB /* Poppins-SemiBold.ttf in Resources */,
-				1A4FBA6429E2D2AA00990CFB /* PublicSans-ExtraLight.ttf in Resources */,
-				1A4FBA6529E2D2AA00990CFB /* PublicSans-Thin.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				CED84B9F2A308336007489FB /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				99B189E87B58440E970BD9A9 /* OpenSans-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,7 +498,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "medTechTests/Info.plist";
+				INFOPLIST_FILE = medTechTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -548,7 +510,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fibocloud.medTech";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fibocloud.superDoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/medTech.app/medTech";
 			};
@@ -561,7 +523,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = SZBD4LZ6Q7;
-				INFOPLIST_FILE = "medTechTests/Info.plist";
+				INFOPLIST_FILE = medTechTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -573,7 +535,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fibocloud.medTech";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fibocloud.superDoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/medTech.app/medTech";
 			};
@@ -588,25 +550,24 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = CDdu07bYNbPnBqbpirxRfmKkiucHIUaig6C4b;
 				CODE_SIGN_ENTITLEMENTS = medTech/medTech.entitlements;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = 7FG935ME9G;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LPZ4C38TLJ;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "medTech/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "medTech";
-				INFOPLIST_KEY_CFBundleDisplayName = SRVE;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_FILE = medTech/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SuperDoc;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fibocloud.medTech";
-				PRODUCT_NAME = "medTech";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fibo.superDoc;
+				PRODUCT_NAME = medTech;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -622,24 +583,23 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODEPUSH_KEY = "SX7BDNphvz--khdjzyHjJuOQ1Sw2V-7zHDUKr";
 				CODE_SIGN_ENTITLEMENTS = medTech/medTech.entitlements;
-				CURRENT_PROJECT_VERSION = 8;
-				DEVELOPMENT_TEAM = 7FG935ME9G;
-				INFOPLIST_FILE = "medTech/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "medTech";
-				INFOPLIST_KEY_CFBundleDisplayName = SRVE;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LPZ4C38TLJ;
+				INFOPLIST_FILE = medTech/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SuperDoc;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fibocloud.medTech";
-				PRODUCT_NAME = "medTech";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fibo.superDoc;
+				PRODUCT_NAME = medTech;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
