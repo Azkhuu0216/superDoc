@@ -22,7 +22,6 @@ import {
 } from "react-native";
 import AudioRecord from "react-native-audio-record";
 import Sound from "react-native-sound";
-import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import { atomDeviceId, atomQuestion } from "store";
 
@@ -272,12 +271,26 @@ const Result = ({ route }: any) => {
         <TouchableOpacity
           onPress={toggleRecord}
           disabled={lastMessageStatus === "loading"}
-          style={[styles.start, toggle && { borderWidth: 0 }]}
+          style={[
+            styles.start,
+            lastMessageStatus === "loading" && { borderColor: "gray" },
+          ]}
         >
-          <Image
-            source={require("../assets/images/Mic_fill.png")}
-            style={{ width: 50, height: 50 }}
-          />
+          {lastMessageStatus === "loading" ? (
+            <Image
+              source={require("../assets/images/disabled.png")}
+              style={{ width: 50, height: 50 }}
+            />
+          ) : (
+            <Image
+              source={
+                toggle
+                  ? require("../assets/images/pause.png")
+                  : require("../assets/images/play.png")
+              }
+              style={{ width: 50, height: 50 }}
+            />
+          )}
         </TouchableOpacity>
       )}
     </SafeAreaView>

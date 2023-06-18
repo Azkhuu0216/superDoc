@@ -134,88 +134,130 @@ const Voice = ({
   const duration = sound?.getDuration() || 0;
   const diff = duration - currentTime;
   const percent = (currentTime / duration) * 100;
-  console.log(icon_code, dFormat?.[icon_code || 1 - 1]);
   if (isDone) {
     return (
-      <View
-        style={[
-          styles.done,
-          { backgroundColor: doneFormat?.[diagnosis_level]?.color },
-        ]}
-      >
+      <>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 10,
-          }}
+          style={[
+            styles.done,
+            {
+              backgroundColor: doneFormat?.[diagnosis_level]?.color,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            },
+          ]}
         >
           <View
             style={{
-              width: 60,
-              height: 60,
-              backgroundColor: "rgba(255, 255, 255, 0.2);",
-              borderRadius: 100,
-              justifyContent: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
               alignItems: "center",
-              opacity: 1,
+              marginBottom: 10,
             }}
           >
-            <Image
-              source={doneFormat?.[diagnosis_level]?.image}
+            <View
               style={{
-                width: 40,
-                height: 40,
+                width: 60,
+                height: 60,
+                backgroundColor: "rgba(255, 255, 255, 0.2);",
+                borderRadius: 100,
+                justifyContent: "center",
+                alignItems: "center",
+                opacity: 1,
               }}
-            />
-          </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {icon_code !== undefined && (
+            >
               <Image
-                source={dFormat?.[icon_code - 1]}
+                source={doneFormat?.[diagnosis_level]?.image}
                 style={{
                   width: 40,
                   height: 40,
                 }}
               />
-            )}
-            {!!pre_diagnosis && (
-              <Text style={{ color: "white", fontSize: 16, marginLeft: 10 }}>
-                {pre_diagnosis}
-              </Text>
-            )}
+            </View>
+            <Text style={{ fontSize: 16, color: "white", fontWeight: "600" }}>
+              {doneFormat?.[diagnosis_level]?.text}
+            </Text>
+          </View>
+          <View style={styles.doneButton}>
+            <Text
+              style={{
+                color: doneFormat?.[diagnosis_level]?.color,
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+                textAlign: "center",
+                fontWeight: "500",
+                textTransform: "capitalize",
+                fontSize: 18,
+              }}
+            >
+              {diagnosis_level?.replace("_", " ")}
+            </Text>
+          </View>
+          <View
+            style={{
+              borderBottomColor: "white",
+              opacity: 0.5,
+              marginVertical: 15,
+              borderBottomWidth: StyleSheet.hairlineWidth,
+            }}
+          />
+          <View>
+            <Text style={{ flex: 1, color: "white", fontSize: 16 }}>
+              {diagnosis}
+            </Text>
           </View>
         </View>
-        <View style={styles.doneButton}>
-          <Text
-            style={{
-              color: doneFormat?.[diagnosis_level]?.color,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              textAlign: "center",
-              fontWeight: "500",
-              textTransform: "capitalize",
-              fontSize: 18,
-            }}
+        {pre_diagnosis && (
+          <View
+            style={[
+              styles.done,
+              {
+                backgroundColor: "#d6d6d6",
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              },
+            ]}
           >
-            {diagnosis_level?.replace("_", " ")}
-          </Text>
-        </View>
-        <View
-          style={{
-            borderBottomColor: "white",
-            opacity: 0.5,
-            marginVertical: 15,
-            borderBottomWidth: StyleSheet.hairlineWidth,
-          }}
-        />
-        <View>
-          <Text style={{ flex: 1, color: "white", fontSize: 16 }}>
-            {diagnosis}
-          </Text>
-        </View>
-      </View>
+            <Text style={{ fontSize: 20 }}>DIAGNOSIS</Text>
+            <View
+              style={{
+                borderBottomColor: "#303030",
+                opacity: 0.6,
+                marginVertical: 15,
+                borderBottomWidth: StyleSheet.hairlineWidth,
+              }}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              {icon_code !== undefined && (
+                <Image
+                  source={dFormat?.[icon_code - 1]}
+                  style={{
+                    width: 40,
+                    height: 40,
+                  }}
+                />
+              )}
+              {!!pre_diagnosis && (
+                <Text
+                  style={{
+                    color: "#303030",
+                    fontSize: 20,
+                    marginLeft: 10,
+                    flex: 1,
+                  }}
+                >
+                  {pre_diagnosis}
+                </Text>
+              )}
+            </View>
+          </View>
+        )}
+      </>
     );
   }
   const isBot = right === "recieved";
@@ -375,9 +417,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   done: {
-    borderRadius: 10,
     padding: 20,
-    margin: 16,
+    marginHorizontal: 16,
   },
   doneButton: {
     color: "#D9AD13",
