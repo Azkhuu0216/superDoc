@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
 	<key>CodePushDeploymentKey</key>
 	<string>$(CODEPUSH_KEY)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -60,8 +60,8 @@
 	<string>This app require permission to access details</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>This app require permission to access details</string>
-  <key>NSAllowsArbitraryLoads</key>
-  <string>This app require permission to play sound</string>
+	<key>NSAllowsArbitraryLoads</key>
+	<string>This app require permission to play sound</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Enable access so you can take photos of your listing, experience, government
 ID, and more directly from the medTech app.</string>

@@ -11,6 +11,7 @@ export const defaultConversation: Conversation = {
   name: "",
   customer_id: 0,
   first_message_id: 0,
+  // diagnosis: undefined,
   first_message: {
     id: 0,
     updated_at: "2023-06-17T16:18:54.299109+08:00",

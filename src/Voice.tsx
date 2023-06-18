@@ -28,6 +28,8 @@ interface IVoice {
   loading: boolean;
   sound?: Sound;
   isDone?: boolean;
+  icon_code?: number;
+  // autoPlay?: boolean;
 }
 
 const Voice = ({
@@ -40,6 +42,8 @@ const Voice = ({
   sound,
   diagnosis_level,
   diagnosis,
+  icon_code,
+  // autoPlay,
   pre_diagnosis,
 }: IVoice) => {
   const intervalID = useRef<NodeJS.Timeout>();
@@ -57,17 +61,32 @@ const Voice = ({
       text: "Outpatient Visit",
       image: require("../assets/images/non_urgent.png"),
     },
-    emergency: {
+    high_urgency: {
       color: "#B62323",
       text: "Transfer to Critical Care",
       image: require("../assets/images/emergency.png"),
     },
   } as { [x: string]: any };
 
+  const dFormat = [
+    require("../assets/images/mosquito.png"),
+    require("../assets/images/infection.png"),
+    require("../assets/images/knee.png"),
+    require("../assets/images/brain.png"),
+    require("../assets/images/gastrointestinal.png"),
+    require("../assets/images/lungs.png"),
+    require("../assets/images/heart.png"),
+    require("../assets/images/upper.png"),
+    require("../assets/images/kwashiorkor.png"),
+    require("../assets/images/cancer.png"),
+    require("../assets/images/back.png"),
+  ];
+
   const handlePlay = () => {
     setPlay(true);
     sound?.play(() => {
       sound?.release();
+      // setPlay(false);
     });
   };
 
@@ -99,6 +118,15 @@ const Voice = ({
     }
   };
 
+  // useEffect(() => {
+  //   if (autoPlay) {
+  //     console.warn("god");
+  //     setTimeout(() => {
+  //       handlePlay();
+  //     }, 1000);
+  //   }
+  // }, [autoPlay]);
+
   useEffect(() => {
     if (!isCurrentIndex) handleStop();
   }, [isCurrentIndex]);
@@ -106,7 +134,7 @@ const Voice = ({
   const duration = sound?.getDuration() || 0;
   const diff = duration - currentTime;
   const percent = (currentTime / duration) * 100;
-
+  console.log(icon_code, dFormat?.[icon_code || 1 - 1]);
   if (isDone) {
     return (
       <View
@@ -142,9 +170,22 @@ const Voice = ({
               }}
             />
           </View>
-          <Text style={{ fontSize: 16, color: "white", fontWeight: "600" }}>
-            {doneFormat?.[diagnosis_level]?.text}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {icon_code !== undefined && (
+              <Image
+                source={dFormat?.[icon_code - 1]}
+                style={{
+                  width: 40,
+                  height: 40,
+                }}
+              />
+            )}
+            {!!pre_diagnosis && (
+              <Text style={{ color: "white", fontSize: 16, marginLeft: 10 }}>
+                {pre_diagnosis}
+              </Text>
+            )}
+          </View>
         </View>
         <View style={styles.doneButton}>
           <Text
@@ -177,6 +218,8 @@ const Voice = ({
       </View>
     );
   }
+  const isBot = right === "recieved";
+  const data = right === "sent" ? transcript : `🦸 SuperDoc: ${transcript}`;
   return (
     <View
       style={[
@@ -185,7 +228,7 @@ const Voice = ({
           alignSelf: right === "sent" ? "flex-end" : "flex-start",
           backgroundColor: right === "sent" ? "#375FFF" : "rgba(0, 0, 0, 0.06)",
         },
-        collapse && {
+        (collapse || isBot) && {
           width: width - 100,
         },
         loading && {
@@ -215,7 +258,7 @@ const Voice = ({
                 }}
               />
             )}
-            {collapse ? (
+            {collapse || isBot ? (
               <View style={{ flexDirection: "row" }}>
                 <Image
                   source={
@@ -279,7 +322,9 @@ const Voice = ({
               </View>
             )}
             <TouchableOpacity
-              onPress={() => setCollapse(!collapse)}
+              onPress={() => {
+                if (!isBot) setCollapse(!collapse);
+              }}
               style={[
                 { flex: 1 },
                 collapse &&
@@ -289,7 +334,7 @@ const Voice = ({
                     paddingLeft: 20,
                     marginLeft: 10,
                   },
-                collapse &&
+                (collapse || isBot) &&
                   right === "received" && {
                     borderRightWidth: 1,
                     paddingRight: 20,
@@ -306,7 +351,7 @@ const Voice = ({
                   alignSelf: "flex-end",
                 }}
               >
-                {collapse ? transcript : "View transcript"}
+                {collapse || isBot ? data : "View transcript"}
               </Text>
             </TouchableOpacity>
           </View>

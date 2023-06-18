@@ -166,13 +166,6 @@ const Result = ({ route }: any) => {
   const onSpeechResultsHandler = (e: any) => {
     let text = e.value[0] as string;
     setQuestion(text);
-    setConversation({
-      ...defaultConversation,
-      first_message: {
-        ...defaultConversation.first_message,
-        message_text: text,
-      },
-    });
   };
   const startRecording = async () => {
     try {
@@ -190,7 +183,7 @@ const Result = ({ route }: any) => {
     }
   };
 
-  console.log(lastMessageStatus);
+  console.log("check", conversation.icon_code);
 
   const text = is_history
     ? conversation?.first_message?.message_text || "Loading"
@@ -239,6 +232,10 @@ const Result = ({ route }: any) => {
             }}
             loading={false}
             key={index}
+            // autoPlay={
+            //   index === tempMessage.length - 1 &&
+            //   voice.message_status === "complete"
+            // }
             voice={voice.message_url}
           />
         ))}
@@ -264,6 +261,7 @@ const Result = ({ route }: any) => {
               transcript={""}
               voice=""
               isDone={true}
+              icon_code={conversation.icon_code}
               pre_diagnosis={conversation.pre_diagnosis}
               diagnosis_level={conversation.diagnosis_level}
               diagnosis={conversation.diagnosis}

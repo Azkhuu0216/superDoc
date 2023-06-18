@@ -4,6 +4,7 @@ export interface Conversation {
   confidence_percent: number;
   created_at: string;
   customer_id: number;
+  icon_code: number;
   diagnosis: string;
   diagnosis_level: string;
   first_message: Message;
