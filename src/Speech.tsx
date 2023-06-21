@@ -59,7 +59,7 @@ const Speech = () => {
   };
   const start = () => {
     postConversation(device).then((body) => {
-      console.log("create conversation response", body);
+      // console.log("create conversation response", body);
       setConversation(body.id);
     });
 
@@ -81,7 +81,7 @@ const Speech = () => {
       uri: audofile,
       type: "audio/mp3",
     });
-    console.log("Question", question);
+    // console.log("Question", question);
     uploadAudio(formData, device).then((res) => {
       const params = JSON.stringify({
         conversation_id: conversation,
